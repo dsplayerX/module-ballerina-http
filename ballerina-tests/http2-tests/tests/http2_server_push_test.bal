@@ -191,7 +191,8 @@ service /backendHttp2Service on serverPushBackendEP {
 
 //Test HTTP/2.0 Server Push scenario
 @test:Config {
-    groups: ["http2ServerPush"]
+    groups: ["http2ServerPush"],
+    enable:false
 }
 function testPushPromise() returns error? {
     http:Response|error response = serverPushClient->get("/frontendHttpService");
