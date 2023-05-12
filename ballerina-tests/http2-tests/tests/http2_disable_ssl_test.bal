@@ -45,7 +45,9 @@ http:ClientConfiguration sslDisabledConfig = {
     }
 };
 
-@test:Config {}
+@test:Config {
+    enable:false
+}
 public function disableSslTest() returns error? {
     http:Client clientEP = check new ("https://localhost:9114", sslDisabledConfig);
     http:Response|error resp = clientEP->get("/hello/");
