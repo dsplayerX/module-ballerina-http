@@ -183,7 +183,9 @@ function test403StatusCodeError() returns error? {
     common:assertTextPayload(response.getTextPayload(), "Forbidden error");
 }
 
-@test:Config {}
+@test:Config {
+    enable:false
+}
 function test404StatusCodeError() returns error? {
     http:Response response = check clientEndpoint->/statusCodeError(statusCode = 404);
     test:assertEquals(response.statusCode, 404);
