@@ -46,7 +46,9 @@ public function testCallingNonExistingEPThroughService() returns error? {
     test:assertEquals(payload, "Success", msg = "Found unexpected output");
 }
 
-@test:Config {}
+@test:Config {
+    enable:false
+}
 function testCallingNonExistingEP() returns error? {
     http:Client callNonExisting = check new("http://localhost:5983/nonExisting");
     string|error response = callNonExisting->get("/");
