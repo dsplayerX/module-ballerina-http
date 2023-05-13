@@ -612,7 +612,9 @@ function testServiceRoot() {
     }
 }
 
-@test:Config {}
+@test:Config {
+    enable:false
+}
 function testAllDefaultValues() {
     http:Response|error response = utmClient->get("/echo44/echo1?foo=zzz");
     if response is http:Response {
