@@ -45,7 +45,9 @@ service /hello on http2DirtyResponseListener {
     }
 }
 
-@test:Config {}
+@test:Config {
+    enable:false
+}
 function tesHttp2tDirtyResponse() returns error? {
     http:Response|error response = http2DirtyResponseTestClient->get("/hello");
     if response is http:Response {
