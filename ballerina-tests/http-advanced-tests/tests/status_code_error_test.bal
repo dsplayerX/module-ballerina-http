@@ -95,6 +95,14 @@ function getStatusCodeError(int statusCode) returns http:StatusCodeError {
         429 => {
             return error http:TooManyRequestsError("Too many requests error");
         }
+        _ => {
+            return getStatusCodeError2(statusCode);
+        }
+    }
+}
+
+function getStatusCodeError2(int statusCode) returns http:StatusCodeError {
+    match statusCode {
         431 => {
             return error http:RequestHeaderFieldsTooLargeError("Request header fields too large error");
         }
