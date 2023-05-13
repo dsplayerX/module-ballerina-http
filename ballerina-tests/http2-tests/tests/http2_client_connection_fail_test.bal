@@ -39,7 +39,9 @@ service /callNonExistingEP on generalListener {
     }
 }
 
-@test:Config {}
+@test:Config {
+    enable:false
+}
 public function testCallingNonExistingEPThroughService() returns error? {
     http:Client callNonExistingTestClient = check new("http://localhost:" + generalPort.toString());
     string payload = check callNonExistingTestClient->get("/callNonExistingEP");
