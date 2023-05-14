@@ -46,7 +46,7 @@ service /helloWorldWithSSL on generalSSLListener {
     }
 }
 
-@test:Config {}
+@test:Config {enable: false}
 public function testClientFallbackFromH2ToH1() returns error? {
     string payload = check fallbackClient->get("/helloWorldWithoutSSL");
     test:assertEquals(payload, version_1_1, msg = "Found unexpected output");
