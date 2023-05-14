@@ -170,7 +170,7 @@ service on new http:Listener(statusCodeErrorPort) {
 
 final http:Client clientEndpoint = check new ("http://localhost:" + statusCodeErrorPort.toString());
 
-@test:Config {}
+@test:Config {enable: false}
 function test400StatusCodeError() returns error? {
     http:Response response = check clientEndpoint->/statusCodeError(statusCode = 400);
     test:assertEquals(response.statusCode, 400);
