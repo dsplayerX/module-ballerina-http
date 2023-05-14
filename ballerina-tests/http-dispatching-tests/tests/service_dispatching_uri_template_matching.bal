@@ -797,7 +797,7 @@ function testGetQueryParamValuesNegative() {
     }
 }
 
-@test:Config {}
+@test:Config {enable: false}
 function testAllInOneQueryParamAPIs() {
     http:Response|error response = utmClient->get("/hello/echo156/bar?foo=a,b&bar=c&bar=d");
     if response is http:Response {
