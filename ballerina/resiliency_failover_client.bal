@@ -511,8 +511,6 @@ public client isolated class FailoverClient {
         int startIndex = -1;
         decimal failoverInterval = failoverInferredConfig.failoverInterval;
 
-        Response inResponse = new;
-        HttpFuture inFuture = new;
         Request failoverRequest = request;
         ClientError?[] failoverActionErrData = [];
         mime:Entity requestEntity = new;
@@ -528,75 +526,37 @@ public client isolated class FailoverClient {
             }
             requestEntity = check failoverRequest.getEntity();
         }
+        Response inResponse = new;
+        HttpFuture inFuture = new;
         while (startIndex != currentIndex) {
             startIndex = initialIndex;
             currentIndex = currentIndex + 1;
-            var endpointResponse = invokeEndpoint(path, failoverRequest, requestAction, foClient.httpClient, verb = verb);
-            if endpointResponse is Response {
-                inResponse = endpointResponse;
-                int httpStatusCode = endpointResponse.statusCode;
-                // Check whether HTTP status code of the response falls into configured `failoverCodes`
-                if failoverCodes.indexOf(httpStatusCode) is int {
-                    ClientError? result = ();
-                    [currentIndex, result] = handleResponseWithErrorCode(endpointResponse, initialIndex, noOfEndpoints,
-                                                                                    currentIndex, failoverActionErrData);
-                    if result is ClientError {
-                        return result;
-                    }
-                } else {
-                    // If the execution reaches here, that means the first endpoint configured in the failover endpoints
-                    // gives the expected response.
-                    self.setSucceededEndpointIndex(currentIndex - 1);
-                    break;
-                }
-            } else if endpointResponse is HttpFuture {
-                // Response came from the `submit()` method.
-                inFuture = endpointResponse;
-                var futureResponse = foClient->getResponse(endpointResponse);
-                if futureResponse is Response {
-                    inResponse = futureResponse;
-                    int httpStatusCode = futureResponse.statusCode;
-                    // Check whether HTTP status code of the response falls into configured `failoverCodes`
-                    if failoverCodes.indexOf(httpStatusCode) is int {
-                        ClientError? result = ();
-                        [currentIndex, result] = handleResponseWithErrorCode(futureResponse, initialIndex, noOfEndpoints,
-                                                                                    currentIndex, failoverActionErrData);
-                        if result is ClientError {
-                            return result;
-                        }
-                    } else {
-                        // If the execution reaches here, that means the first endpoint configured in the failover endpoints
-                        // gives the expected response.
-                        self.setSucceededEndpointIndex(currentIndex - 1);
-                        break;
-                    }
-                } else {
-                    ClientError? httpConnectorErr = ();
-                    [currentIndex, httpConnectorErr] = handleError(futureResponse, initialIndex, noOfEndpoints,
-                                                                                    currentIndex, failoverActionErrData);
-
-                    if httpConnectorErr is ClientError {
-                        return httpConnectorErr;
-                    }
-                }
-            } else if endpointResponse is ClientError {
-                ClientError? httpConnectorErr = ();
-                [currentIndex, httpConnectorErr] = handleError(endpointResponse, initialIndex, noOfEndpoints,
-                                                                                    currentIndex, failoverActionErrData);
-
-                if httpConnectorErr is ClientError {
-                    return httpConnectorErr;
-                }
-            } else {
-                panic error ClientError("invalid response type received");
+            any|error endpointResponse = invokeEndpoint(path, failoverRequest, requestAction, foClient.httpClient, verb = verb);
+            ClientError|[int,Response, HttpFuture] result = self.builtMessage(endpointResponse, failoverRequest, foClient, currentIndex, initialIndex, noOfEndpoints,
+                    failoverCodes, failoverActionErrData);
+           
+            int status = 0;
+            if result is ClientError {
+                return result;
+            } else if result is [int,Response, HttpFuture] {
+                status = result[0];
+                inResponse = result[1];
+                inFuture = result[2];
             }
+
+            if (status== 0) {
+                break;
+            }
+
+
             failoverRequest = check createFailoverRequest(failoverRequest, requestEntity);
             runtime:sleep(failoverInterval);
 
-            Client? tmpClnt;
+            Client? tmpClnt = ();
             lock {
                 tmpClnt = self.failoverClientsArray[currentIndex];
             }
+            
             if tmpClnt is Client {
                 foClient = tmpClnt;
             } else {
@@ -610,6 +570,75 @@ public client isolated class FailoverClient {
         return inResponse;
     }
 
+    isolated function builtMessage(any|error endpointResponse, Request failoverRequest, Client foClient,
+            int currentIndex, int initialIndex, int noOfEndpoints, int[] failoverCodes, ClientError?[] failoverActionErrData)
+            returns ClientError|[int,Response, HttpFuture]{
+        Response inResponse = new;
+        HttpFuture inFuture = new;
+        int i = currentIndex;
+        if endpointResponse is Response {
+                inResponse = endpointResponse;
+                int httpStatusCode = endpointResponse.statusCode;
+                // Check whether HTTP status code of the response falls into configured `failoverCodes`
+                if failoverCodes.indexOf(httpStatusCode) is int {
+                    ClientError? result = ();
+                 
+                    [i, result] = handleResponseWithErrorCode(endpointResponse, initialIndex, noOfEndpoints,
+                                                                                    currentIndex, failoverActionErrData);
+                    if result is ClientError {
+                        return result;
+                    }
+                } else {
+                    // If the execution reaches here, that means the first endpoint configured in the failover endpoints
+                    // gives the expected response.
+                    self.setSucceededEndpointIndex(i - 1);
+                    return [0, inResponse, inFuture];
+                }
+            } else if endpointResponse is HttpFuture {
+                // Response came from the `submit()` method.
+                inFuture = endpointResponse;
+                var futureResponse = foClient->getResponse(endpointResponse);
+                if futureResponse is Response {
+                    inResponse = futureResponse;
+                    int httpStatusCode = futureResponse.statusCode;
+                    // Check whether HTTP status code of the response falls into configured `failoverCodes`
+                    if failoverCodes.indexOf(httpStatusCode) is int {
+                        ClientError? result = ();
+                        [i, result] = handleResponseWithErrorCode(futureResponse, initialIndex, noOfEndpoints,
+                                                                                    currentIndex, failoverActionErrData);
+                        if result is ClientError {
+                            return result;
+                        }
+                    } else {
+                        // If the execution reaches here, that means the first endpoint configured in the failover endpoints
+                        // gives the expected response.
+                        self.setSucceededEndpointIndex(i - 1);
+                        return [0, inResponse, inFuture];
+                    }
+                } else {
+                    ClientError? httpConnectorErr = ();
+                    [i, httpConnectorErr] = handleError(futureResponse, initialIndex, noOfEndpoints,
+                                                                                    currentIndex, failoverActionErrData);
+
+                    if httpConnectorErr is ClientError {
+                        return httpConnectorErr;
+                    }
+                }
+            } else if endpointResponse is ClientError {
+                ClientError? httpConnectorErr = ();
+                [i, httpConnectorErr] = handleError(endpointResponse, initialIndex, noOfEndpoints,
+                                                                                    currentIndex, failoverActionErrData);
+
+                if httpConnectorErr is ClientError {
+                    return httpConnectorErr;
+                }
+            } else {
+                panic error ClientError("invalid response type received");
+            }
+
+            return [1, inResponse, inFuture];
+    }
+    
     isolated function getLastSuceededClientEP() returns Client {
         Client? lastSuccessClient;
         lock {
