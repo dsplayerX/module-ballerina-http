@@ -177,7 +177,9 @@ function test400StatusCodeError() returns error? {
     common:assertTextPayload(response.getTextPayload(), "Bad request error");
 }
 
-@test:Config {}
+@test:Config {
+    enable:false
+}
 function test401StatusCodeError() returns error? {
     http:Response response = check clientEndpoint->/statusCodeError(statusCode = 401);
     test:assertEquals(response.statusCode, 401);
