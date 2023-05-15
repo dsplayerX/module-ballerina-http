@@ -186,16 +186,14 @@ service on new http:Listener(statusCodeErrorPort) {
 
 final http:Client clientEndpoint = check new ("http://localhost:" + statusCodeErrorPort.toString());
 
-@test:Config {enable: false}
+@test:Config {}
 function test400StatusCodeError() returns error? {
     http:Response response = check clientEndpoint->/statusCodeError(statusCode = 400);
     test:assertEquals(response.statusCode, 400);
     common:assertTextPayload(response.getTextPayload(), "Bad request error");
 }
 
-@test:Config {
-    enable:false
-}
+@test:Config {}
 function test401StatusCodeError() returns error? {
     http:Response response = check clientEndpoint->/statusCodeError(statusCode = 401);
     test:assertEquals(response.statusCode, 401);
@@ -209,9 +207,7 @@ function test403StatusCodeError() returns error? {
     common:assertTextPayload(response.getTextPayload(), "Forbidden error");
 }
 
-@test:Config {
-    enable:false
-}
+@test:Config {}
 function test404StatusCodeError() returns error? {
     http:Response response = check clientEndpoint->/statusCodeError(statusCode = 404);
     test:assertEquals(response.statusCode, 404);
