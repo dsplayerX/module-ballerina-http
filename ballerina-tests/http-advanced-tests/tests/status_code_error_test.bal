@@ -53,6 +53,14 @@ function getStatusCodeError(int statusCode) returns http:StatusCodeError {
         410 => {
             return error http:GoneError("Gone error");
         }
+        _ => {
+            return getStatusCodeError2(statusCode);
+        }
+    }
+}
+
+function getStatusCodeError2(int statusCode) returns http:StatusCodeError {
+    match statusCode {
         411 => {
             return error http:LengthRequiredError("Length required error");
         }
@@ -96,12 +104,12 @@ function getStatusCodeError(int statusCode) returns http:StatusCodeError {
             return error http:TooManyRequestsError("Too many requests error");
         }
         _ => {
-            return getStatusCodeError2(statusCode);
+            return getStatusCodeError3(statusCode);
         }
     }
 }
 
-function getStatusCodeError2(int statusCode) returns http:StatusCodeError {
+function getStatusCodeError3(int statusCode) returns http:StatusCodeError {
     match statusCode {
         431 => {
             return error http:RequestHeaderFieldsTooLargeError("Request header fields too large error");
@@ -124,6 +132,14 @@ function getStatusCodeError2(int statusCode) returns http:StatusCodeError {
         504 => {
             return error http:GatewayTimeoutError("Gateway timeout error");
         }
+        _ => {
+            return getStatusCodeError4(statusCode);
+        }
+    }
+}
+
+function getStatusCodeError4(int statusCode) returns http:StatusCodeError {
+    match statusCode {
         505 => {
             return error http:HTTPVersionNotSupportedError("HTTP version not supported error");
         }
