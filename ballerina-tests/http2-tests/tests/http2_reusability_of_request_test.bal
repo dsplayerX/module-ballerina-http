@@ -16,7 +16,7 @@
 
 import ballerina/http;
 import ballerina/io;
-// import ballerina/log;
+import ballerina/log;
 import ballerina/mime;
 import ballerina/test;
 import ballerina/http_test_common as common;
@@ -244,6 +244,7 @@ service /testService_2 on http2ReuseRequestListenerEP {
 
 @test:Config {}
 function testHttp2ReuseRequestWithoutEntity() returns error? {
+    log:printInfo("Executing testHttp2ReuseRequestWithoutEntity");
     http:Response|error response = http2ReuseRequestClient->get("/reuseObj/request_without_entity");
     if response is http:Response {
         test:assertEquals(response.statusCode, 200, msg = "Found unexpected output");
@@ -256,6 +257,7 @@ function testHttp2ReuseRequestWithoutEntity() returns error? {
 
 @test:Config {}
 function testHttp2ReuseRequestWithEmptyEntity() returns error? {
+    log:printInfo("Executing testHttp2ReuseRequestWithEmptyEntity");
     http:Response|error response = http2ReuseRequestClient->get("/reuseObj/request_with_empty_entity");
     if response is http:Response {
         test:assertEquals(response.statusCode, 200, msg = "Found unexpected output");
@@ -268,6 +270,7 @@ function testHttp2ReuseRequestWithEmptyEntity() returns error? {
 
 @test:Config {}
 function testHttp2TwoRequestsSameEntity() returns error? {
+    log:printInfo("Executing testHttp2TwoRequestsSameEntity");
     http:Response|error response = http2ReuseRequestClient->get("/reuseObj/two_request_same_entity");
     if response is http:Response {
         test:assertEquals(response.statusCode, 200, msg = "Found unexpected output");
@@ -280,6 +283,7 @@ function testHttp2TwoRequestsSameEntity() returns error? {
 
 @test:Config {}
 function testHttp2SameRequestWithADatasource() returns error? {
+    log:printInfo("Executing testHttp2SameRequestWithADatasource");
     http:Response|error response = http2ReuseRequestClient->get("/reuseObj/request_with_datasource");
     if response is http:Response {
         test:assertEquals(response.statusCode, 200, msg = "Found unexpected output");
@@ -293,6 +297,7 @@ function testHttp2SameRequestWithADatasource() returns error? {
 // TODO: Enable after the I/O revamp
 @test:Config {enable: false}
 function testHttp2SameRequestWithByteChannel() returns error? {
+    log:printInfo("Executing testHttp2SameRequestWithByteChannel");
     http:Response|error response = http2ReuseRequestClient->post("/reuseObj/request_with_bytechannel", "Hello from POST!");
     if response is http:Response {
         test:assertEquals(response.statusCode, 200, msg = "Found unexpected output");
@@ -305,6 +310,7 @@ function testHttp2SameRequestWithByteChannel() returns error? {
 
 @test:Config {}
 function testHttp2SameRequestWithByteStream() returns error? {
+    log:printInfo("Executing testHttp2SameRequestWithByteStream");
     http:Response|error response = http2ReuseRequestClient->post("/reuseObj/request_with_byteStream", "Hello from POST!");
     if response is http:Response {
         test:assertEquals(response.statusCode, 200, msg = "Found unexpected output");

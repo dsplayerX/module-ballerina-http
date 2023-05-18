@@ -17,6 +17,7 @@
 import ballerina/test;
 import ballerina/http;
 import ballerina/http_test_common as common;
+import ballerina/log;
 
 int http2AcceptEncodingHeaderTestPort = common:getHttp2Port(acceptEncodingHeaderTestPort);
 
@@ -50,6 +51,7 @@ service /hello on http2AcceptEncodingListenerEP {
 //Tests the behaviour when Accept Encoding option is enable.
 @test:Config {}
 function testHttp2AcceptEncodingEnabled() {
+    log:printInfo("Executing testHttp2AcceptEncodingEnabled");
     http:Request req = new;
     req.setTextPayload("accept encoding test");
     http:Response|error response = http2AcceptEncodingEnableEP->post("/", req);
@@ -65,6 +67,7 @@ function testHttp2AcceptEncodingEnabled() {
 //Tests the behaviour when Accept Encoding option is disable.
 @test:Config {}
 function testHttp2AcceptEncodingDisabled() returns error? {
+    log:printInfo("Executing testHttp2AcceptEncodingDisabled");
     http:Request req = new;
     req.setTextPayload("accept encoding test");
     http:Response response = check http2AcceptEncodingDisableEP->post("/", req);
@@ -75,6 +78,7 @@ function testHttp2AcceptEncodingDisabled() returns error? {
 //Tests the behaviour when Accept Encoding option is auto.
 @test:Config {}
 function testHttp2AcceptEncodingAuto() {
+    log:printInfo("Executing testHttp2AcceptEncodingAuto");
     http:Request req = new;
     req.setTextPayload("accept encoding test");
     http:Response|error response = http2AcceptEncodingAutoEP->post("/", req);

@@ -17,6 +17,7 @@
 import ballerina/http;
 import ballerina/test;
 import ballerina/http_test_common as common;
+import ballerina/log;
 
 listener http:Listener generalSSLListener = new (httpSslGeneralPort, {
     httpVersion: http:HTTP_1_1,
@@ -58,6 +59,7 @@ public function testClientFallbackFromH2ToH1() returns error? {
 // TODO disabled due to https://github.com/ballerina-platform/ballerina-standard-library/issues/3250
 @test:Config {enable: false}
 public function testSslClientFallbackFromH2ToH1() returns error? {
+    log:printInfo("Executing testSslClientFallbackFromH2ToH1");
     string payload = check fallbackSslClient->get("/helloWorldWithSSL");
     test:assertEquals(payload, version_1_1, msg = "Found unexpected output");
 }
@@ -65,6 +67,7 @@ public function testSslClientFallbackFromH2ToH1() returns error? {
 // TODO disabled due to https://github.com/ballerina-platform/ballerina-standard-library/issues/3250
 @test:Config {enable: false, dependsOn: [testSslClientFallbackFromH2ToH1]}
 public function testSslClientFallbackFromH2ToH1Subsequent() returns error? {
+    log:printInfo("Executing testSslClientFallbackFromH2ToH1Subsequent");
     string payload = check fallbackSslClient->get("/helloWorldWithSSL");
     test:assertEquals(payload, version_1_1, msg = "Found unexpected output");
 }

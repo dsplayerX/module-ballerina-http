@@ -20,6 +20,7 @@ import ballerina/test;
 import ballerina/http;
 import ballerina/lang.'string;
 import ballerina/http_test_common as common;
+import ballerina/log;
 
 service /mimeTest on generalHTTP2Listener {
 
@@ -78,6 +79,7 @@ final http:Client http2MimeClient = check new ("http://localhost:" + http2Genera
 // Access entity to read payload and send back
 @test:Config {}
 function testHttp2AccessingPayloadFromEntity() returns error? {
+    log:printInfo("Executing testHttp2AccessingPayloadFromEntity");
     string key = "lang";
     string value = "ballerina";
     string path = "/mimeTest/getPayloadFromEntity";
@@ -90,6 +92,7 @@ function testHttp2AccessingPayloadFromEntity() returns error? {
 
 @test:Config {}
 function testHttp2StreamResponseSerialize() returns error? {
+    log:printInfo("Executing testHttp2StreamResponseSerialize");
     string key = "lang";
     string value = "ballerina";
     string path = "/mimeTest/largepayload";

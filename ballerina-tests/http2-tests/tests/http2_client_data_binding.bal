@@ -21,6 +21,7 @@ import ballerina/mime;
 import ballerina/url;
 import ballerina/lang.'string as strings;
 import ballerina/http_test_common as common;
+import ballerina/log;
 
 int http2ClientDatabindingTestPort1 = common:getHttp2Port(clientDatabindingTestPort1);
 int http2ClientDatabindingTestPort2 = common:getHttp2Port(clientDatabindingTestPort2);
@@ -552,6 +553,7 @@ service /backend on http2ClientDBBackendListener {
 
 @test:Config {}
 public function testXmlMimeTypeVariations() returns error? {
+    log:printInfo("Executing testXmlMimeTypeVariations");
     xml response = check http2ClientDBBackendClient->get("/backend/getXmlMimeType1");
     test:assertEquals(response, xml `<name>Ballerina</name>`);
 
@@ -565,6 +567,7 @@ public function testXmlMimeTypeVariations() returns error? {
 
 @test:Config {}
 public function testJsonErrorMimeTypeVariations() returns error? {
+    log:printInfo("Executing testJsonErrorMimeTypeVariations");
     json response = check http2ClientDBBackendClient->get("/backend/getJsonErrorMimeType1");
     test:assertEquals(response, {name: "Inferred by type"});
 
@@ -580,6 +583,7 @@ public function testJsonErrorMimeTypeVariations() returns error? {
 
 @test:Config {}
 public function testJsontMimeTypeVariations() returns error? {
+    log:printInfo("Executing testJsontMimeTypeVariations");
     json response = check http2ClientDBBackendClient->get("/backend/getJsonMimeType1");
     test:assertEquals(response, {name: "Ballerina"});
 
@@ -598,6 +602,7 @@ public function testJsontMimeTypeVariations() returns error? {
 
 @test:Config {}
 public function testUncommonetMimeTypeVariations() returns error? {
+    log:printInfo("Executing testUncommonetMimeTypeVariations");
     // all these cases does not goto to a particular builder, but binding type is inferred by the return type
     json jsonPayload = check http2ClientDBBackendClient->get("/backend/getUncommonMimeType1");
     test:assertEquals(jsonPayload, {name: "Ballerina"});
@@ -771,6 +776,7 @@ function testHttp2DifferentMethods() returns error? {
 // Test HTTP redirect client data binding
 @test:Config {}
 function testHttp2RedirectClientDataBinding() returns error? {
+    log:printInfo("Executing testHttp2RedirectClientDataBinding");
     http:Response|error response = http2ClientDBTestClient->get("/passthrough/redirect");
     if response is http:Response {
         test:assertEquals(response.statusCode, 200, msg = "Found unexpected output");
@@ -785,6 +791,7 @@ function testHttp2RedirectClientDataBinding() returns error? {
 // Test HTTP retry client data binding
 @test:Config {}
 function testHttp2RetryClientDataBinding() returns error? {
+    log:printInfo("Executing testHttp2RetryClientDataBinding");
     http:Response|error response = http2ClientDBTestClient->get("/passthrough/retry");
     if response is http:Response {
         test:assertEquals(response.statusCode, 200, msg = "Found unexpected output");
@@ -798,6 +805,7 @@ function testHttp2RetryClientDataBinding() returns error? {
 // Test 500 error panic
 @test:Config {}
 function testHttp25XXErrorPanic() returns error? {
+    log:printInfo("Executing testHttp25XXErrorPanic");
     http:Response|error response = http2ClientDBTestClient->get("/passthrough/500");
     if response is http:Response {
         test:assertEquals(response.statusCode, 501, msg = "Found unexpected output");
@@ -813,6 +821,7 @@ function testHttp25XXErrorPanic() returns error? {
 // todo: disabled due to missing feature
 // @test:Config {}
 function testHttp25XXHandleError() returns error? {
+    log:printInfo("Executing testHttp25XXHandleError");
     http:Response|error response = http2ClientDBTestClient->get("/passthrough/500handle");
     if response is http:Response {
         test:assertEquals(response.statusCode, 501, msg = "Found unexpected output");
@@ -827,6 +836,7 @@ function testHttp25XXHandleError() returns error? {
 // Test 404 error panic
 @test:Config {}
 function testHttp24XXErrorPanic() returns error? {
+    log:printInfo("Executing testHttp24XXErrorPanic");
     http:Response|error response = http2ClientDBTestClient->get("/passthrough/404");
     if response is http:Response {
         test:assertEquals(response.statusCode, 404, msg = "Found unexpected output");
@@ -841,6 +851,7 @@ function testHttp24XXErrorPanic() returns error? {
 // Test 404 error handle
 @test:Config {}
 function testHttp24XXHandleError() returns error? {
+    log:printInfo("Executing testHttp24XXHandleError");
     http:Response|error response = http2ClientDBTestClient->get("/passthrough/404/handle");
     if response is http:Response {
         test:assertEquals(response.statusCode, 404, msg = "Found unexpected output");
@@ -854,6 +865,7 @@ function testHttp24XXHandleError() returns error? {
 // Test 405 error handle
 @test:Config {}
 function testHttp2405HandleError() returns error? {
+    log:printInfo("Executing testHttp2405HandleError");
     http:Response|error response = http2ClientDBTestClient->get("/passthrough/404/get4XX");
     if response is http:Response {
         test:assertEquals(response.statusCode, 405, msg = "Found unexpected output");
@@ -866,6 +878,7 @@ function testHttp2405HandleError() returns error? {
 
 @test:Config {}
 function testHttp2405AsApplicationResponseError() {
+    log:printInfo("Executing testHttp2405AsApplicationResponseError");
     json|error response = http2ClientDBTestClient->post("/passthrough/allMethods", "hi");
     if (response is http:ApplicationResponseError) {
         test:assertEquals(response.detail().statusCode, 405, msg = "Found unexpected output");
@@ -878,6 +891,7 @@ function testHttp2405AsApplicationResponseError() {
 
 @test:Config {}
 function testHttp2XmlErrorSerialize() returns error? {
+    log:printInfo("Executing testHttp2XmlErrorSerialize");
     http:Response|error response = http2ClientDBTestClient->get("/passthrough/testBody/xmltype");
     if response is http:Response {
         test:assertEquals(response.statusCode, 404, msg = "Found unexpected output");
@@ -890,6 +904,7 @@ function testHttp2XmlErrorSerialize() returns error? {
 
 @test:Config {}
 function testHttp2JsonErrorSerialize() returns error? {
+    log:printInfo("Executing testHttp2JsonErrorSerialize");
     http:Response|error response = http2ClientDBTestClient->get("/passthrough/testBody/jsontype");
     if response is http:Response {
         test:assertEquals(response.statusCode, 500, msg = "Found unexpected output");
@@ -902,6 +917,7 @@ function testHttp2JsonErrorSerialize() returns error? {
 
 @test:Config {}
 function testHttp2BinaryErrorSerialize() returns error? {
+    log:printInfo("Executing testHttp2BinaryErrorSerialize");
     http:Response|error response = http2ClientDBTestClient->get("/passthrough/testBody/binarytype");
     if response is http:Response {
         test:assertEquals(response.statusCode, 503, msg = "Found unexpected output");
@@ -919,6 +935,7 @@ function testHttp2BinaryErrorSerialize() returns error? {
 
 @test:Config {}
 function testHttp2DetailBodyCreationFailure() {
+    log:printInfo("Executing testHttp2DetailBodyCreationFailure");
     string|error response = http2ClientDBBackendClient->get("/backend/getErrorResponseWithErrorContentType");
     if (response is error) {
         test:assertEquals(response.message(),
@@ -930,6 +947,7 @@ function testHttp2DetailBodyCreationFailure() {
 
 @test:Config {}
 function testHttp2DBRecordErrorNegative() {
+    log:printInfo("Executing testHttp2DBRecordErrorNegative");
     ClientDBErrorPerson|error response = http2ClientDBBackendClient->post("/backend/getRecord", "want record");
     if (response is error) {
         common:assertTrueTextPayload(response.message(),
@@ -943,6 +961,7 @@ function testHttp2DBRecordErrorNegative() {
 
 @test:Config {}
 function testHttp2DBRecordArrayNegative() {
+    log:printInfo("Executing testHttp2DBRecordArrayNegative");
     ClientDBErrorPerson[]|error response = http2ClientDBBackendClient->post("/backend/getRecordArr", "want record arr");
     if (response is error) {
         common:assertTrueTextPayload(response.message(),
@@ -954,6 +973,7 @@ function testHttp2DBRecordArrayNegative() {
 
 @test:Config {}
 function testHttp2MapOfStringDataBinding() returns error? {
+    log:printInfo("Executing testHttp2MapOfStringDataBinding");
     http:Response|error response = http2ClientDBTestClient->get("/passthrough/mapOfString1");
     if response is http:Response {
         test:assertEquals(response.statusCode, 200, msg = "Found unexpected output");
@@ -967,6 +987,7 @@ function testHttp2MapOfStringDataBinding() returns error? {
 
 @test:Config {}
 function testHttp2MapOfStringDataBindingWithJsonPayload() {
+    log:printInfo("Executing testHttp2MapOfStringDataBindingWithJsonPayload");
     map<string>|error response = http2ClientDBBackendClient->get("/backend/getJson");
     if (response is error) {
         common:assertTrueTextPayload(response.message(),
@@ -978,6 +999,7 @@ function testHttp2MapOfStringDataBindingWithJsonPayload() {
 
 @test:Config {}
 function testHttp2MapOfStringDataBindingWithEncodedKey() returns error? {
+    log:printInfo("Executing testHttp2MapOfStringDataBindingWithEncodedKey");
     http:Response|error response = http2ClientDBTestClient->get("/passthrough/mapOfString2");
     if response is http:Response {
         test:assertEquals(response.statusCode, 200, msg = "Found unexpected output");
@@ -991,6 +1013,7 @@ function testHttp2MapOfStringDataBindingWithEncodedKey() returns error? {
 
 @test:Config {}
 function testHttp2MapOfStringDataBindingWithEmptyValue() returns error? {
+    log:printInfo("Executing testHttp2MapOfStringDataBindingWithEmptyValue");
     http:Response|error response = http2ClientDBTestClient->get("/passthrough/mapOfString3");
     if response is http:Response {
         test:assertEquals(response.statusCode, 200, msg = "Found unexpected output");
@@ -1004,6 +1027,7 @@ function testHttp2MapOfStringDataBindingWithEmptyValue() returns error? {
 
 @test:Config {}
 function testHttp2MapOfStringDataBindingWithEmptyKey() returns error? {
+    log:printInfo("Executing testHttp2MapOfStringDataBindingWithEmptyKey");
     http:Response|error response = http2ClientDBTestClient->get("/passthrough/mapOfString4");
     if response is http:Response {
         test:assertEquals(response.statusCode, 200, msg = "Found unexpected output");
@@ -1017,6 +1041,7 @@ function testHttp2MapOfStringDataBindingWithEmptyKey() returns error? {
 
 @test:Config {}
 function testHttp2MapOfStringDataBindingWithEmptyPayload() {
+    log:printInfo("Executing testHttp2MapOfStringDataBindingWithEmptyPayload");
     http:Response|error response = http2ClientDBTestClient->get("/passthrough/mapOfString5");
     if response is http:Response {
         test:assertEquals(response.statusCode, 500, msg = "Found unexpected output");
@@ -1028,6 +1053,7 @@ function testHttp2MapOfStringDataBindingWithEmptyPayload() {
 
 @test:Config {}
 function testHttp2MapOfStringDataBindingWithSinglePair() returns error? {
+    log:printInfo("Executing testHttp2MapOfStringDataBindingWithSinglePair");
     http:Response|error response = http2ClientDBTestClient->get("/passthrough/mapOfString6");
     if response is http:Response {
         test:assertEquals(response.statusCode, 200, msg = "Found unexpected output");
@@ -1041,6 +1067,7 @@ function testHttp2MapOfStringDataBindingWithSinglePair() returns error? {
 
 @test:Config {}
 function testHttp2NilableMapOfStringDataBindingWithEmptyPayload() {
+    log:printInfo("Executing testHttp2NilableMapOfStringDataBindingWithEmptyPayload");
     map<string>?|error response = http2ClientDBBackendClient->get("/backend/getFormData5");
     test:assertTrue(response is (), msg = "Found unexpected output");
 }

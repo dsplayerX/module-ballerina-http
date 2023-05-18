@@ -17,6 +17,7 @@
 import ballerina/http;
 import ballerina/test;
 import ballerina/http_test_common as common;
+import ballerina/log;
 
 final http:Client h2WithPriorKnowledge = check new ("http://localhost:9101",
     http2Settings = {http2PriorKnowledge: true}, poolConfig = {});
@@ -64,6 +65,7 @@ service /priorKnowledgeTestBackEnd on HTTP2BackendListener {
 
 @test:Config {}
 public function testPriorKnowledgeOn() returns error? {
+    log:printInfo("Executing testPriorKnowledgeOn");
     final http:Client clientEP = check new ("http://localhost:9100");
     http:Response|error resp = clientEP->get("/priorKnowledge/on");
     if resp is http:Response {
@@ -75,6 +77,7 @@ public function testPriorKnowledgeOn() returns error? {
 
 @test:Config {}
 public function testPriorKnowledgeOff() returns error? {
+    log:printInfo("Executing testPriorKnowledgeOff");
     final http:Client clientEP = check new ("http://localhost:9100");
     http:Response|error resp = clientEP->get("/priorKnowledge/off");
     if resp is http:Response {

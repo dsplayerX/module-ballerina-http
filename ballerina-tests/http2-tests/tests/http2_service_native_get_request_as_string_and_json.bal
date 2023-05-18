@@ -17,6 +17,7 @@
 import ballerina/test;
 import ballerina/http;
 import ballerina/http_test_common as common;
+import ballerina/log;
 
 service /MyService on generalHTTP2Listener {
 
@@ -34,6 +35,7 @@ final http:Client http2RequestClient2 = check new ("http://localhost:" + http2Ge
 
 @test:Config {}
 public function testHttp2AccessingPayloadAsTextAndJSON() {
+    log:printInfo("Executing testHttp2AccessingPayloadAsTextAndJSON");
     string payload = "{ \"foo\" : \"bar\"}";
     string path = "/MyService/myResource";
     http:Request req = new;

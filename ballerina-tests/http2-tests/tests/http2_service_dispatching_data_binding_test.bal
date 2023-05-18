@@ -17,6 +17,7 @@
 import ballerina/http;
 import ballerina/test;
 import ballerina/http_test_common as common;
+import ballerina/log;
 
 final http:Client http2DataBindingClient = check new("http://localhost:" + http2GeneralPort.toString());
 
@@ -47,6 +48,7 @@ service /databinding on generalHTTPS2Listener {
 
 @test:Config {}
 function testHTTP2DataBinding() returns error? {
+    log:printInfo("Executing testHTTP2DataBinding");
     http:Request req = new;
     req.setJsonPayload({name:"wso2",age:12});
     json payload = check http2DataBindingClient->post("/databinding/person", req);
@@ -55,6 +57,7 @@ function testHTTP2DataBinding() returns error? {
 
 @test:Config {}
 function testHTTPS2DataBinding() returns error? {
+    log:printInfo("Executing testHTTPS2DataBinding");
     http:Request req = new;
     req.setJsonPayload({name:"wso2",age:12});
     json payload = check http2SslDataBindingClient->post("/databinding/person", req);
@@ -103,6 +106,7 @@ service /interceptor2 on generalHTTPS2Listener {
 
 @test:Config {}
 function testHTTP2DataBindingWithInterceptor1() returns error? {
+    log:printInfo("Executing testHTTP2DataBindingWithInterceptor1");
     http:Request req = new;
     req.setTextPayload("Hello World!");
     req.setHeader("interceptor", "databinding-interceptor");
@@ -112,6 +116,7 @@ function testHTTP2DataBindingWithInterceptor1() returns error? {
 
 @test:Config {}
 function testHTTP2DataBindingWithInterceptor2() returns error? {
+    log:printInfo("Executing testHTTP2DataBindingWithInterceptor2");
     http:Request req = new;
     req.setTextPayload("Hello World!");
     req.setHeader("interceptor", "databinding-interceptor");
@@ -121,6 +126,7 @@ function testHTTP2DataBindingWithInterceptor2() returns error? {
 
 @test:Config {}
 function testHTTPS2DataBindingWithInterceptor1() returns error? {
+    log:printInfo("Executing testHTTPS2DataBindingWithInterceptor1");
     http:Request req = new;
     req.setTextPayload("Hello World!");
     req.setHeader("interceptor", "databinding-interceptor");
@@ -130,6 +136,7 @@ function testHTTPS2DataBindingWithInterceptor1() returns error? {
 
 @test:Config {}
 function testHTTPS2DataBindingWithInterceptor2() returns error? {
+    log:printInfo("Executing testHTTPS2DataBindingWithInterceptor2");
     http:Request req = new;
     req.setTextPayload("Hello World!");
     req.setHeader("interceptor", "databinding-interceptor");

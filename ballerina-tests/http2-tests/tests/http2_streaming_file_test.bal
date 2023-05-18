@@ -16,7 +16,7 @@
 
 import ballerina/http;
 import ballerina/io;
-// import ballerina/log;
+import ballerina/log;
 import ballerina/mime;
 import ballerina/test;
 import ballerina/file;
@@ -90,6 +90,7 @@ service /streamBack on new http:Listener(http2StreamTest2) {
 
 @test:Config {}
 function testHttp2StreamingLargeFile() returns error? {
+    log:printInfo("Executing testHttp2StreamingLargeFile");
     http:Response response = check http2StreamTestClient->get("/stream/fileupload");
     test:assertEquals(response.statusCode, 200, msg = "Found unexpected output");
     common:assertHeaderValue(check response.getHeader(common:CONTENT_TYPE), common:TEXT_PLAIN);
@@ -98,6 +99,7 @@ function testHttp2StreamingLargeFile() returns error? {
 
 @test:Config {}
 function testHttp2ConsumedStream() returns error? {
+    log:printInfo("Executing testHttp2ConsumedStream");
     string msg = "Error occurred while retrieving the byte stream from the response";
     string cMsg = "Byte stream is not available but payload can be obtain either as xml, json, string or byte[] type";
     http:Response response = check http2StreamTestClient->get("/stream/cacheFileupload");

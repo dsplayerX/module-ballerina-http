@@ -17,6 +17,7 @@
 import ballerina/http;
 import ballerina/test;
 import ballerina/http_test_common as common;
+import ballerina/log;
 
 final http:Client eP1 = check new ("http://localhost:9106");
 
@@ -139,6 +140,7 @@ service /http2EchoService on new http:Listener(9106) {
 
 @test:Config {}
 public function testClientUpgradewithLargePayload() returns error? {
+    log:printInfo("Executing testClientUpgradewithLargePayload");
     http:Client clientEP = check new ("http://localhost:9106");
     http:Response|error resp = clientEP->get("/http2EchoService/initial");
     string expectedPayload = "{\"web-app\":{\"servlet\":[{\"servlet-name\":\"cofaxCDS\", \"servlet-class\":"

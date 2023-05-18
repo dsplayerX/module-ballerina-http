@@ -14,7 +14,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-// import ballerina/log;
+import ballerina/log;
 import ballerina/test;
 import ballerina/http;
 import ballerina/http_test_common as common;
@@ -97,6 +97,7 @@ isolated http:Service http2Mock5 = service object {
 //Test the detach method with multiple services attachments
 @test:Config {}
 function testHttp2ServiceDetach() {
+    log:printInfo("Executing testHttp2ServiceDetach");
     http:Response|error response = http2ServiceDetachClient->get("/mock1");
     if response is http:Response {
         test:assertEquals(response.statusCode, 200, msg = "Found unexpected output");

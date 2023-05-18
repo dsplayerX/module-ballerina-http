@@ -17,6 +17,7 @@
 import ballerina/http;
 import ballerina/test;
 import ballerina/http_test_common as common;
+import ballerina/log;
 
 //Backend pointed by these clients should be down.
 final http:Client priorOn = check new ("http://localhost:14555",
@@ -45,6 +46,7 @@ isolated function handleResponse(http:Response|error result) returns string {
 
 @test:Config {}
 public function testServerDown() returns error? {
+    log:printInfo("Executing testServerDown");
     http:Client clientEP = check new ("http://localhost:9100");
     http:Response|error resp = clientEP->get("/general/serverDown");
     if resp is http:Response {

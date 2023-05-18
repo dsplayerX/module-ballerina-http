@@ -2,6 +2,7 @@ import ballerina/http;
 import ballerina/lang.runtime;
 import ballerina/test;
 import ballerina/http_test_common as common;
+import ballerina/log;
 
 service class HelloService {
     *http:Service;
@@ -13,6 +14,7 @@ service class HelloService {
 
 @test:Config {}
 public function testHttp2ListenerStop1() returns error? {
+    log:printInfo("Executing testHttp2ListenerStop1");
     http:Listener serviceEP = check new (http2ListenerStopTest);
     check serviceEP.attach(new HelloService());
     check serviceEP.'start();
@@ -46,6 +48,7 @@ public function testHttp2ListenerStop1() returns error? {
 
 @test:Config {}
 public function testHttp2ListenerStop2() returns error? {
+    log:printInfo("Executing testHttp2ListenerStop2");
     http:Listener serviceEP = check new (http2ListenerStopTest);
     check serviceEP.attach(new HelloService());
     check serviceEP.'start();
@@ -79,6 +82,7 @@ public function testHttp2ListenerStop2() returns error? {
 
 @test:Config {}
 public function testHttp2SecuredListenerStop1() returns error? {
+    log:printInfo("Executing testHttp2SecuredListenerStop1");
     http:Listener securedEP = check new (http2SecuredListenerStopTest1,
         secureSocket = {
         key: {
@@ -127,6 +131,7 @@ public function testHttp2SecuredListenerStop1() returns error? {
 
 @test:Config {}
 public function testHttp2SecuredListenerStop2() returns error? {
+    log:printInfo("Executing testHttp2SecuredListenerStop2");
     http:Listener securedEP = check new (http2SecuredListenerStopTest2,
         secureSocket = {
         key: {

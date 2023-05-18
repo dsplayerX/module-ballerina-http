@@ -20,6 +20,7 @@ import ballerina/lang.'string as strings;
 import ballerina/mime;
 import ballerina/test;
 import ballerina/http_test_common as common;
+import ballerina/log;
 
 final http:Client http2Client = check new ("http://localhost:9122", http2Settings = {http2PriorKnowledge: true});
 
@@ -296,6 +297,7 @@ service /testHttp2Service on new http:Listener(9123) {
 
 @test:Config {}
 public function testHttp2GetAction() returns error? {
+    log:printInfo("Executing testHttp2GetAction");
     http:Client clientEP = check new ("http://localhost:9123");
     http:Response|error resp = clientEP->get("/testHttp2Service/clientGet");
     if resp is http:Response {
@@ -308,6 +310,7 @@ public function testHttp2GetAction() returns error? {
 
 @test:Config {}
 public function testHttp2PostAction() returns error? {
+    log:printInfo("Executing testHttp2PostAction");
     http:Client clientEP = check new ("http://localhost:9123");
     http:Response|error resp = clientEP->get("/testHttp2Service/clientPostWithoutBody");
     if resp is http:Response {
@@ -319,6 +322,7 @@ public function testHttp2PostAction() returns error? {
 
 @test:Config {}
 public function testHttp2PostActionWithBody() returns error? {
+    log:printInfo("Executing testHttp2PostActionWithBody");
     http:Client clientEP = check new ("http://localhost:9123");
     http:Response|error resp = clientEP->get("/testHttp2Service/clientPostWithBody");
     if resp is http:Response {
@@ -330,6 +334,7 @@ public function testHttp2PostActionWithBody() returns error? {
 
 @test:Config {}
 public function testHttp2PostWithBlob() returns error? {
+    log:printInfo("Executing testHttp2PostWithBlob");
     http:Client clientEP = check new ("http://localhost:9123");
     http:Response|error resp = clientEP->get("/testHttp2Service/testHttp2PostWithBinaryData");
     if resp is http:Response {
@@ -353,6 +358,7 @@ public function testHttp2PostWithByteChannel() returns error? {
 
 @test:Config {}
 public function testHttp2PostWithTextToStream() returns error? {
+    log:printInfo("Executing testHttp2PostWithTextToStream");
     http:Client clientEP = check new ("http://localhost:9123");
     http:Response|error resp = clientEP->post("/testHttp2Service/testHttp2PostWithTextToStream", "Sample Text");
     if resp is http:Response {
@@ -364,6 +370,7 @@ public function testHttp2PostWithTextToStream() returns error? {
 
 @test:Config {}
 public function testHttp2PostWithByteStream() returns error? {
+    log:printInfo("Executing testHttp2PostWithByteStream");
     http:Client clientEP = check new ("http://localhost:9123");
     http:Response|error resp = clientEP->post("/testHttp2Service/testHttp2PostWithByteStream", "Sample Text");
     if resp is http:Response {
@@ -375,6 +382,7 @@ public function testHttp2PostWithByteStream() returns error? {
 
 @test:Config {}
 public function testHttp2PostWithByteStreamToTextPayloadOfClient() returns error? {
+    log:printInfo("Executing testHttp2PostWithByteStreamToTextPayloadOfClient");
     http:Client clientEP = check new ("http://localhost:9123");
     http:Response|error resp = clientEP->post("/testHttp2Service/testHttp2PostWithByteStreamToText", "Sample Text");
     if resp is http:Response {

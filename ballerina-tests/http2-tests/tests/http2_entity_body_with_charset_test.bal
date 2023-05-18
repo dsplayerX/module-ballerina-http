@@ -17,6 +17,7 @@
 import ballerina/test;
 import ballerina/http;
 import ballerina/http_test_common as common;
+import ballerina/log;
 
 service /entityService on generalHTTP2Listener {
 
@@ -40,6 +41,7 @@ final http:Client http2EntityClient = check new ("http://localhost:" + http2Gene
     groups: ["disabledOnWindows"]
 }
 function http2JsonTest() returns error? {
+    log:printInfo("Executing http2JsonTest");
     string path = "/entityService/jsonTest";
     http:Request request = new;
     request.setHeader("content-type", "application/json");

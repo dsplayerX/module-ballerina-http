@@ -17,6 +17,7 @@
 import ballerina/http;
 import ballerina/test;
 import ballerina/http_test_common as common;
+import ballerina/log;
 
 int http2HateoasRuntimeErrorPort = common:getHttp2Port(hateoasRuntimeErrorPort);
 
@@ -24,6 +25,7 @@ listener http:Listener http2HateoasRuntimeErrorServerEP = check new (http2Hateoa
 
 @test:Config {}
 function testHttp2DuplicateResourceName() {
+    log:printInfo("Executing testHttp2DuplicateResourceName");
     http:Service duplicateResourceNameService = service object {
         @http:ResourceConfig {
             name: "resource1"
@@ -50,6 +52,7 @@ function testHttp2DuplicateResourceName() {
 
 @test:Config {}
 function testHttp2DuplicateLinkRelation() {
+    log:printInfo("Executing testHttp2DuplicateLinkRelation");
     http:Service duplicateResourceNameService = service object {
         @http:ResourceConfig {
             name: "resource1",
@@ -80,6 +83,7 @@ function testHttp2DuplicateLinkRelation() {
 
 @test:Config {}
 function testHttp2LinkedResourceNotFound() {
+    log:printInfo("Executing testHttp2LinkedResourceNotFound");
     http:Service duplicateResourceNameService = service object {
         @http:ResourceConfig {
             linkedTo: [{name: "resource1"}]
@@ -99,6 +103,7 @@ function testHttp2LinkedResourceNotFound() {
 
 @test:Config {}
 function testHttp2LinkedResourceNotFoundWithMethod() {
+    log:printInfo("Executing testHttp2LinkedResourceNotFoundWithMethod");
     http:Service duplicateResourceNameService = service object {
         @http:ResourceConfig {
             linkedTo: [{name: "resource1", method: "get"}]
@@ -125,6 +130,7 @@ function testHttp2LinkedResourceNotFoundWithMethod() {
 
 @test:Config {}
 function testHttp2UnresolvedLinkedResource() {
+    log:printInfo("Executing testHttp2UnresolvedLinkedResource");
     http:Service duplicateResourceNameService = service object {
         @http:ResourceConfig {
             name: "resource1",

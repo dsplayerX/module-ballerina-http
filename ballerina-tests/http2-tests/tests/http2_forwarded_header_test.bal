@@ -17,6 +17,7 @@
 import ballerina/http;
 import ballerina/test;
 import ballerina/http_test_common as common;
+import ballerina/log;
 
 service /initiatingService on generalListener {
     resource function get initiatingResource(http:Caller caller, http:Request request) returns error? {
@@ -38,6 +39,7 @@ service /forwardedBackend on generalHTTP2Listener {
 
 @test:Config {}
 public function testForwardHeader() returns error? {
+    log:printInfo("Executing testForwardHeader");
     http:Client clientEP = check new ("http://localhost:9000", httpVersion = http:HTTP_1_1);
     http:Response|error resp = clientEP->get("/initiatingService/initiatingResource");
     if resp is http:Response {

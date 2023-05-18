@@ -17,6 +17,7 @@
 import ballerina/test;
 import ballerina/http;
 import ballerina/http_test_common as common;
+import ballerina/log;
 
 int http2serviceEndpointTestPort = common:getHttp2Port(serviceEndpointTestPort);
 
@@ -51,6 +52,7 @@ service /serviceEndpointHello on http2ServiceEndpointTestEP {
 //Test the protocol value of ServiceEndpoint struct within a service
 @test:Config {}
 function testHttp2GetProtocolConnectionStruct() {
+    log:printInfo("Executing testHttp2GetProtocolConnectionStruct");
     http:Response|error response = httpServiceEndpointClient->get("/serviceEndpointHello/protocol");
     if response is http:Response {
         test:assertEquals(response.statusCode, 200, msg = "Found unexpected output");
@@ -63,6 +65,7 @@ function testHttp2GetProtocolConnectionStruct() {
 //Test the local struct values of the ServiceEndpoint struct within a service
 @test:Config {}
 function testHttp2LocalStructInConnection() {
+    log:printInfo("Executing testHttp2LocalStructInConnection");
     http:Response|error response = httpServiceEndpointClient->get("/serviceEndpointHello/local");
     if response is http:Response {
         test:assertEquals(response.statusCode, 200, msg = "Found unexpected output");
@@ -80,6 +83,7 @@ function testHttp2LocalStructInConnection() {
 
 @test:Config {}
 function testHttp2GetHostName() {
+    log:printInfo("Executing testHttp2GetHostName");
     var response = httpServiceEndpointClient->get("/serviceEndpointHello/host", targetType = string);
     if (response is string) {
         test:assertTrue(response.length() != 0, msg = "Found unexpected output");

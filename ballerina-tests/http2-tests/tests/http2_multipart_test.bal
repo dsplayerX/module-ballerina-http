@@ -15,7 +15,7 @@
 // under the License.
 
 import ballerina/http;
-// import ballerina/log;
+import ballerina/log;
 import ballerina/mime;
 import ballerina/test;
 import ballerina/http_test_common as common;
@@ -185,6 +185,7 @@ isolated function getContDisposition(string partName) returns (mime:ContentDispo
 
 @test:Config {}
 public function testMultipart() returns error? {
+    log:printInfo("Executing testMultipart");
     http:Client clientEP = check new ("http://localhost:9100");
     http:Response|error resp = clientEP->get("/multiparts/initial", {"priorKnowledge": "false"});
     if resp is http:Response {
@@ -196,6 +197,7 @@ public function testMultipart() returns error? {
 
 @test:Config {}
 public function testMultipartsWithPriorKnowledge() returns error? {
+    log:printInfo("Executing testMultipartsWithPriorKnowledge");
     http:Client clientEP = check new ("http://localhost:9100");
     http:Response|error resp = clientEP->get("/multiparts/initial", {"priorKnowledge": "true"});
     if resp is http:Response {

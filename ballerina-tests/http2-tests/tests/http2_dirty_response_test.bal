@@ -19,6 +19,7 @@ import ballerina/test;
 import ballerina/http;
 import ballerina/lang.runtime;
 import ballerina/http_test_common as common;
+import ballerina/log;
 
 int http2DirtyResponseTestPort = common:getHttp2Port(dirtyResponseTestPort);
 
@@ -47,6 +48,7 @@ service /hello on http2DirtyResponseListener {
 
 @test:Config {}
 function tesHttp2tDirtyResponse() returns error? {
+    log:printInfo("Executing testHttp2DirtyResponse");
     http:Response|error response = http2DirtyResponseTestClient->get("/hello");
     if response is http:Response {
         test:assertEquals(response.statusCode, 200, msg = "Found unexpected output");

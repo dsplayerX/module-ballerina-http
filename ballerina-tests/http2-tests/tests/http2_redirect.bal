@@ -18,6 +18,7 @@ import ballerina/io;
 import ballerina/test;
 import ballerina/http;
 import ballerina/http_test_common as common;
+import ballerina/log;
 
 listener http:Listener http2RedirectServiceEndpoint1 = new (http2RedirectTestPort1);
 
@@ -228,6 +229,7 @@ service /redirect2 on http2RedirectServiceEndpoint3 {
     groups: ["http2Redirect"]
 }
 function testHTTP2Redirect() returns error? {
+    log:printInfo("Executing testHTTP2Redirect");
     http:Response|error response = http2RedirectClient->get("/testHttp2Redirect/");
     if response is http:Response {
         test:assertEquals(response.statusCode, 200, msg = "Found unexpected output");
@@ -243,6 +245,7 @@ function testHTTP2Redirect() returns error? {
     groups: ["http2Redirect"]
 }
 function testHTTP2MaxRedirect() returns error? {
+    log:printInfo("Executing testHTTP2MaxRedirect");
     http:Response|error response = http2RedirectClient->get("/testHttp2Redirect/maxRedirect");
     if response is http:Response {
         test:assertEquals(response.statusCode, 200, msg = "Found unexpected output");
@@ -258,6 +261,7 @@ function testHTTP2MaxRedirect() returns error? {
     groups: ["http2Redirect"]
 }
 function testHTTP2CrossDomain() returns error? {
+    log:printInfo("Executing testHTTP2CrossDomain");
     http:Response|error response = http2RedirectClient->get("/testHttp2Redirect/crossDomain");
     if response is http:Response {
         test:assertEquals(response.statusCode, 200, msg = "Found unexpected output");
@@ -273,6 +277,7 @@ function testHTTP2CrossDomain() returns error? {
     groups: ["http2Redirect"]
 }
 function testHTTP2NoRedirect() returns error? {
+    log:printInfo("Executing testHTTP2NoRedirect");
     http:Response|error response = http2RedirectClient->get("/testHttp2Redirect/noRedirect");
     if response is http:Response {
         test:assertEquals(response.statusCode, 200, msg = "Found unexpected output");
@@ -288,6 +293,7 @@ function testHTTP2NoRedirect() returns error? {
     groups: ["http2Redirect"]
 }
 function testHTTP2QPWithRelativePath() returns error? {
+    log:printInfo("Executing testHTTP2QPWithRelativePath");
     http:Response|error response = http2RedirectClient->get("/testHttp2Redirect/qpWithRelativePath");
     if response is http:Response {
         test:assertEquals(response.statusCode, 200, msg = "Found unexpected output");
@@ -303,6 +309,7 @@ function testHTTP2QPWithRelativePath() returns error? {
     groups: ["http2Redirect"]
 }
 function testHTTP2QPWithAbsolutePath() returns error? {
+    log:printInfo("Executing testHTTP2QPWithAbsolutePath");
     http:Response|error response = http2RedirectClient->get("/testHttp2Redirect/qpWithAbsolutePath");
     if response is http:Response {
         test:assertEquals(response.statusCode, 200, msg = "Found unexpected output");
@@ -318,6 +325,7 @@ function testHTTP2QPWithAbsolutePath() returns error? {
     groups: ["http2Redirect"]
 }
 function testHTTP2OriginalRequestWithQP() returns error? {
+    log:printInfo("Executing testHTTP2OriginalRequestWithQP");
     http:Response|error response = http2RedirectClient->get("/testHttp2Redirect/originalRequestWithQP");
     if response is http:Response {
         test:assertEquals(response.statusCode, 200, msg = "Found unexpected output");
@@ -332,6 +340,7 @@ function testHTTP2OriginalRequestWithQP() returns error? {
     groups: ["http2Redirect"]
 }
 function testHTTP2303Status() returns error? {
+    log:printInfo("Executing testHTTP2303Status");
     http:Response|error response = http2RedirectClient->get("/testHttp2Redirect/test303");
     if response is http:Response {
         test:assertEquals(response.statusCode, 200, msg = "Found unexpected output");

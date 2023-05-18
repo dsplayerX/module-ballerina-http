@@ -15,7 +15,7 @@
 // under the License.
 
 import ballerina/http;
-// import ballerina/log;
+import ballerina/log;
 import ballerina/test;
 
 final http:Client h2Client = check new("http://localhost:9100", {
@@ -66,6 +66,7 @@ function handleRespError(error? result) {
 
 @test:Config {}
 public function testUnexpected100ContinueResponse() returns error? {
+    log:printInfo("Executing testUnexpected100ContinueResponse");
     http:Client clientEP = check new("http://localhost:9128");
     http:Response|error resp = clientEP->get("/continueService/initial");
     if resp is http:Response {

@@ -17,6 +17,7 @@
 import ballerina/http;
 import ballerina/test;
 import ballerina/http_test_common as common;
+import ballerina/log;
 
 int http2HateoasTestPort = common:getHttp2Port(hateoasTestPort);
 
@@ -95,6 +96,7 @@ http:Client http2JsonClientEP = check new (string `http://localhost:${http2Hateo
 
 @test:Config {}
 function testHttp2HateoasLinks1() returns error? {
+    log:printInfo("Executing testHttp2HateoasLinks1");
     record {*http:Links; *OrderReceipt;} orderReceipt = check http2JsonClientEP->post("/order?closed=false", mockOrder);
     map<http:Link> expectedLinks = {
         "update": {
@@ -122,6 +124,7 @@ function testHttp2HateoasLinks1() returns error? {
 
 @test:Config {}
 function testHttp2HateoasLinkHeaderWithClosedRecord() returns error? {
+    log:printInfo("Executing testHttp2HateoasLinkHeaderWithClosedRecord");
     http:Response res = check http2JsonClientEP->post("/order?closed=true", mockOrder);
     test:assertTrue(res.hasHeader("Link"));
     string linkHeader = check res.getHeader("Link");
@@ -164,6 +167,7 @@ function testHttp2HateoasLinkHeaderWithClosedRecord() returns error? {
 
 @test:Config {}
 function testHttp2HateoasLinkHeaderWithReadOnlyPayload() returns error? {
+    log:printInfo("Executing testHttp2HateoasLinkHeaderWithReadOnlyPayload");
     http:Response res = check http2JsonClientEP->get("/orders/001");
     test:assertTrue(res.hasHeader("Link"));
     string linkHeader = check res.getHeader("Link");
@@ -207,6 +211,7 @@ function testHttp2HateoasLinkHeaderWithReadOnlyPayload() returns error? {
 
 @test:Config {}
 function testHttp2HateoasLinks2() returns error? {
+    log:printInfo("Executing testHttp2HateoasLinks2");
     record {*http:Links; *OrderReceipt;} orderReceipt = check http2JsonClientEP->put("/orders/001", mockOrder);
     map<http:Link> expectedLinks = {
         "self": {
@@ -234,6 +239,7 @@ function testHttp2HateoasLinks2() returns error? {
 
 @test:Config {}
 function testHttp2HateoasLinkHeaderWithoutBody() returns error? {
+    log:printInfo("Executing testHttp2HateoasLinkHeaderWithoutBody");
     http:Response res = check http2JsonClientEP->delete("/orders/001");
     test:assertTrue(res.hasHeader("Link"));
     string linkHeader = check res.getHeader("Link");
@@ -252,6 +258,7 @@ function testHttp2HateoasLinkHeaderWithoutBody() returns error? {
 
 @test:Config {}
 function testHttp2HateoasLinksInBody() returns error? {
+    log:printInfo("Executing testHttp2HateoasLinksInBody");
     record {*http:Links; *PaymentReceipt;} paymentReceipt = check http2JsonClientEP->put("/payment/001?closed=false", mockPayment);
     map<http:Link> expectedLinks = {
         "self": {
@@ -270,6 +277,7 @@ function testHttp2HateoasLinksInBody() returns error? {
 
 @test:Config {}
 function testHttp2HateoasLinkHeaderWithClosedRecordInBody() returns error? {
+    log:printInfo("Executing testHttp2HateoasLinkHeaderWithClosedRecordInBody");
     http:Response res = check http2JsonClientEP->put("/payment/001?closed=true", mockPayment);
     test:assertTrue(res.hasHeader("Link"));
     string linkHeader = check res.getHeader("Link");

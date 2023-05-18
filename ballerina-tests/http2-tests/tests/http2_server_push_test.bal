@@ -19,6 +19,7 @@ import ballerina/lang.'string as strings;
 import ballerina/test;
 import ballerina/http;
 import ballerina/http_test_common as common;
+import ballerina/log;
 
 listener http:Listener serverPushFrontendEP = new (serverPushTestPort1);
 listener http:Listener serverPushBackendEP = new (serverPushTestPort2);
@@ -194,6 +195,7 @@ service /backendHttp2Service on serverPushBackendEP {
     groups: ["http2ServerPush"]
 }
 function testPushPromise() returns error? {
+    log:printInfo("Executing testPushPromise");
     http:Response|error response = serverPushClient->get("/frontendHttpService");
     if response is http:Response {
         test:assertEquals(response.statusCode, 200, msg = "Found unexpected output");

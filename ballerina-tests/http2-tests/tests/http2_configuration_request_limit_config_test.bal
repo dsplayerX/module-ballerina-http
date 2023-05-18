@@ -18,6 +18,7 @@ import ballerina/mime;
 import ballerina/test;
 import ballerina/http;
 import ballerina/http_test_common as common;
+import ballerina/log;
 
 listener http:Listener http2HeaderLimitEP = new(requestLimitsTestPort5, http2lowHeaderConfig);
 
@@ -114,6 +115,7 @@ service /requestPayloadLimit on http2LowPayloadLimitEP {
 //Tests the behaviour when url length is less than the configured threshold
 @test:Config {}
 function testHttp2ValidUrlLength() returns error? {
+    log:printInfo("Executing testHttp2ValidUrlLength");
     http:Client limitClient = check new ("http://localhost:" + http2RequestLimitsTestPort1.toString(),
         http2Settings = {http2PriorKnowledge: true});
     http:Response response = check limitClient->get("/requestUriLimit/validUrl");
@@ -126,6 +128,7 @@ function testHttp2ValidUrlLength() returns error? {
 // todo: disabled due to missing feature
 // @test:Config {}
 function testHttp2InvalidUrlLength() returns error? {
+    log:printInfo("Executing testHttp2InvalidUrlLength");
     http:Client limitClient = check new ("http://localhost:" + http2RequestLimitsTestPort2.toString(),
         http2Settings = {http2PriorKnowledge: true});
     http:Response response = check limitClient->get("/lowRequestUriLimit/invalidUrl");
@@ -136,6 +139,7 @@ function testHttp2InvalidUrlLength() returns error? {
 //Tests the behaviour when header size is less than the configured threshold
 @test:Config {}
 function testHttp2ValidHeaderLength() returns error? {
+    log:printInfo("Executing testHttp2ValidHeaderLength");
     http:Client limitClient = check new ("http://localhost:" + http2RequestLimitsTestPort4.toString(),
         http2Settings = {http2PriorKnowledge: true});
     http:Response response = check limitClient->get("/requestHeaderLimit/validHeaderSize");
@@ -150,6 +154,7 @@ function testHttp2ValidHeaderLength() returns error? {
     groups: ["disabledOnWindows"]
 }
 function testHttp2InvalidHeaderLength() returns error? {
+    log:printInfo("Executing testHttp2InvalidHeaderLength");
     http:Client limitClient = check new ("http://localhost:" + http2RequestLimitsTestPort3.toString(),
         http2Settings = {http2PriorKnowledge: true});
     http:Response response = check limitClient->get("/lowRequestHeaderLimit/invalidHeaderSize", {"X-Test": getLargeHeader()});
@@ -163,6 +168,7 @@ function testHttp2InvalidHeaderLength() returns error? {
     groups: ["disabledOnWindows"]
 }
 function testHttp2Http2ServiceInvalidHeaderLength() returns error? {
+    log:printInfo("Executing testHttp2Http2ServiceInvalidHeaderLength");
     http:Client limitClient = check new ("http://localhost:" + requestLimitsTestPort5.toString(),
         http2Settings = {http2PriorKnowledge: true});
     http:Response response = check limitClient->get("/http2service/invalidHeaderSize", {"X-Test": getLargeHeader()});
@@ -173,6 +179,7 @@ function testHttp2Http2ServiceInvalidHeaderLength() returns error? {
 // todo: disabled due to missing feature
 // @test:Config {}
 function testHttp2InvalidPayloadSize() returns error? {
+    log:printInfo("Executing testHttp2InvalidPayloadSize");
     http:Request req = new;
     req.setTextPayload("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     http:Client limitClient = check new ("http://localhost:" + http2RequestLimitsTestPort6.toString(),

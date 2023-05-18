@@ -15,7 +15,7 @@
 // under the License.
 
 import ballerina/http;
-// import ballerina/log;
+import ballerina/log;
 import ballerina/test;
 import ballerina/http_test_common as common;
 
@@ -47,6 +47,7 @@ http:ClientConfiguration sslDisabledConfig = {
 
 @test:Config {}
 public function disableSslTest() returns error? {
+    log:printInfo("Executing disableSslTest");
     http:Client clientEP = check new ("https://localhost:9114", sslDisabledConfig);
     http:Response|error resp = clientEP->get("/hello/");
     if resp is http:Response {

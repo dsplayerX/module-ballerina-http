@@ -16,6 +16,7 @@
 
 import ballerina/test;
 import ballerina/http;
+import ballerina/log;
 
 listener http:Listener http2ClientContinueListenerEP = check new(http2ClientContinueTestPort);
 
@@ -45,6 +46,7 @@ service /'continue on http2ClientContinueListenerEP {
 
 @test:Config {}
 function testContinueWithHttp2PriorKnowledge() returns error? {
+    log:printInfo("Executing testContinueWithHttp2PriorKnowledge");
     http:Request req = new;
     req.addHeader("Expect", "100-continue");
     req.setPayload("Hello World!");
@@ -54,6 +56,7 @@ function testContinueWithHttp2PriorKnowledge() returns error? {
 
 @test:Config {}
 function testContinueForLargePayloadWithHttp2PriorKnowledge() returns error? {
+    log:printInfo("Executing testContinueForLargePayloadWithHttp2PriorKnowledge");
     http:Request req = new;
     req.addHeader("Expect", "100-continue");
     string payload = "";
@@ -69,6 +72,7 @@ function testContinueForLargePayloadWithHttp2PriorKnowledge() returns error? {
 
 @test:Config {}
 function testContinueWithOutHttp2PriorKnowledge() returns error? {
+    log:printInfo("Executing testContinueWithOutHttp2PriorKnowledge");
     http:Request req = new;
     req.addHeader("Expect", "100-continue");
     req.setPayload("Hello World!");
@@ -78,6 +82,7 @@ function testContinueWithOutHttp2PriorKnowledge() returns error? {
 
 @test:Config {}
 function testContinueForLargePayloadWithOutHttp2PriorKnowledge() returns error? {
+    log:printInfo("Executing testContinueForLargePayloadWithOutHttp2PriorKnowledge");
     http:Request req = new;
     req.addHeader("Expect", "100-continue");
     string payload = "";

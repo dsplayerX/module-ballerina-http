@@ -17,6 +17,7 @@
 import ballerina/test;
 import ballerina/http;
 import ballerina/http_test_common as common;
+import ballerina/log;
 
 int http2ConnectionNativeTest = common:getHttp2Port(connectionNativeTestPort);
 
@@ -35,6 +36,7 @@ service /connectionNativeHello on http2ConnectionNativeTestEP {
 //Test whether the headers and status codes are set correctly
 @test:Config {}
 function testHttp2Redirect() returns error? {
+    log:printInfo("Executing testHttp2Redirect");
     http:Response|error response = http2ConnectionNativeClient->get("/connectionNativeHello/redirect");
     if response is http:Response {
         test:assertEquals(response.statusCode, 301, msg = "Found unexpected output");

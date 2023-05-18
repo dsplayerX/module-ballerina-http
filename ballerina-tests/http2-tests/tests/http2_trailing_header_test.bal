@@ -15,7 +15,7 @@
 // under the License.
 
 import ballerina/http;
-// import ballerina/log;
+import ballerina/log;
 import ballerina/test;
 import ballerina/http_test_common as common;
 
@@ -92,6 +92,7 @@ service /passthroughservice on backendEp {
 
 @test:Config {}
 public function testHttp2SmallPayloadResponseTrailers() returns error? {
+    log:printInfo("Executing testHttp2SmallPayloadResponseTrailers");
     http:Client clientEP = check new ("http://localhost:9118");
     http:Response resp = check clientEP->post("/trailerInitiator/backend/echoResponseWithTrailer", "Small payload");
     var payload = resp.getTextPayload();
@@ -104,6 +105,7 @@ public function testHttp2SmallPayloadResponseTrailers() returns error? {
 
 @test:Config {}
 public function testHttp2LargePayloadResponseTrailers() returns error? {
+    log:printInfo("Executing testHttp2LargePayloadResponseTrailers");
     http:Client clientEP = check new ("http://localhost:9118");
     http:Response resp = check clientEP->post("/trailerInitiator/backend/echoResponseWithTrailer", common:LARGE_ENTITY);
     var payload = resp.getTextPayload();
@@ -116,6 +118,7 @@ public function testHttp2LargePayloadResponseTrailers() returns error? {
 
 @test:Config {}
 public function testHttp2EmptyPayloadResponseTrailers() returns error? {
+    log:printInfo("Executing testHttp2EmptyPayloadResponseTrailers");
     http:Client clientEP = check new ("http://localhost:9118");
     http:Response resp = check clientEP->get("/trailerInitiator/backend/responseEmptyPayloadWithTrailer");
     var payload = resp.getTextPayload();
@@ -128,6 +131,7 @@ public function testHttp2EmptyPayloadResponseTrailers() returns error? {
 
 @test:Config {}
 public function testHttp2ProxiedTrailers() returns error? {
+    log:printInfo("Executing testHttp2ProxiedTrailers");
     http:Client clientEP = check new ("http://localhost:9118");
     http:Response resp = check clientEP->post("/trailerInitiator/passthroughservice/forward", "Small payload");
     var payload = resp.getTextPayload();
@@ -140,6 +144,7 @@ public function testHttp2ProxiedTrailers() returns error? {
 
 @test:Config {}
 public function testHttp2PassThroughButBuildPayload() returns error? {
+    log:printInfo("Executing testHttp2PassThroughButBuildPayload");
     http:Client clientEP = check new ("http://localhost:9118");
     http:Response resp = check clientEP->post("/trailerInitiator/passthroughservice/buildPayload", "Small payload");
     var payload = resp.getTextPayload();

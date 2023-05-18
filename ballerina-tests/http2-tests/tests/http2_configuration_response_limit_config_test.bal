@@ -15,7 +15,7 @@
 // under the License.
 
 import ballerina/http;
-// import ballerina/log;
+import ballerina/log;
 import ballerina/test;
 import ballerina/http_test_common as common;
 
@@ -148,6 +148,7 @@ service /backend on http2ResponseLimitBackendEP {
 // todo: disabled due to missing feature
 // @test:Config {}
 function testHttp2ValidStatusLineLength() returns error? {
+    log:printInfo("Executing testHttp2ValidStatusLineLength");
     http:Response response = check http2LimitTestClient->get("/responseLimit/statusline", {[X_TEST_TYPE] : [SUCCESS]});
     test:assertEquals(response.statusCode, 200, msg = "Found unexpected output");
     test:assertEquals(response.reasonPhrase, "HELLO", msg = "Found unexpected output");
@@ -158,6 +159,7 @@ function testHttp2ValidStatusLineLength() returns error? {
 // todo: disabled due to missing feature
 // @test:Config {}
 function testHttp2InvalidStatusLineLength() returns error? {
+    log:printInfo("Executing testHttp2InvalidStatusLineLength");
     http:Response response = check http2LimitTestClient->get("/responseLimit/statusline", {[X_TEST_TYPE] : [ERROR]});
     test:assertEquals(response.statusCode, 500, msg = "Found unexpected output");
     common:assertTextPayload(response.getTextPayload(), "error ClientError (\"Response max " +
@@ -167,6 +169,7 @@ function testHttp2InvalidStatusLineLength() returns error? {
 //Test when header size is less than the configured maxHeaderSize threshold
 @test:Config {}
 function testHttp2ValidHeaderLengthOfResponse() returns error? {
+    log:printInfo("Executing testHttp2ValidHeaderLengthOfResponse");
     http:Response response = check http2LimitTestClient->get("/responseLimit/header", {[X_TEST_TYPE] : [SUCCESS]});
     test:assertEquals(response.statusCode, 200, msg = "Found unexpected output");
     common:assertHeaderValue(check response.getHeader(X_HEADER), "Validated");
@@ -177,6 +180,7 @@ function testHttp2ValidHeaderLengthOfResponse() returns error? {
 // todo: disabled due to missing feature
 // @test:Config {}
 function testHttp2InvalidHeaderLengthOfResponse() returns error? {
+    log:printInfo("Executing testHttp2InvalidHeaderLengthOfResponse");
     http:Response response = check http2LimitTestClient->get("/responseLimit/header", {[X_TEST_TYPE] : [ERROR]});
     test:assertEquals(response.statusCode, 500, msg = "Found unexpected output");
     common:assertTextPayload(response.getTextPayload(), "error ClientError (\"Response max " +
@@ -192,6 +196,7 @@ function testHttp2InvalidHeaderLengthOfResponse() returns error? {
 //Test when entityBody size is less than the configured maxEntityBodySize threshold
 @test:Config {}
 function testHttp2ValidEntityBodyLength() returns error? {
+    log:printInfo("Executing testHttp2ValidEntityBodyLength");
     http:Response response = check http2LimitTestClient->get("/responseLimit/entitybody", {[X_TEST_TYPE] : [SUCCESS]});
     test:assertEquals(response.statusCode, 200, msg = "Found unexpected output");
     common:assertTextPayload(response.getTextPayload(), "Small payload");
@@ -201,6 +206,7 @@ function testHttp2ValidEntityBodyLength() returns error? {
 // todo: disabled due to missing feature
 // @test:Config {}
 function testHttp2InvalidEntityBodyLength() returns error? {
+    log:printInfo("Executing testHttp2InvalidEntityBodyLength");
     http:Response response = check http2LimitTestClient->get("/responseLimit/statusline", {[X_TEST_TYPE] : [ERROR]});
     test:assertEquals(response.statusCode, 500, msg = "Found unexpected output");
     common:assertTextPayload(response.getTextPayload(), "error ClientError (\"Response max " +
